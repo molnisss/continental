@@ -7,13 +7,16 @@ conn = psycopg2.connect(DATABASE_URL)
 cursor = conn.cursor()
 
 cursor.execute('''
+               
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
-    account_id VARCHAR(10) PRIMARY KEY,
+    account_id INT PRIMARY KEY,
     username VARCHAR(100),
     phone VARCHAR(20),
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ref_count INTEGER DEFAULT 0,
-    ref_id VARCHAR(10)
+    ref_id INT
 );
 ''')
 
