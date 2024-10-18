@@ -33,7 +33,7 @@ class User:
                 self.account_id = user[0]
                 self.username = user[1]
                 self.phone = user[2]
-                self.date = user[3]
+                self.registered_at = user[3]
                 self.ref_count = user[4]
                 self.ref_id = user[5]
 
@@ -55,7 +55,7 @@ class User:
             user_data = (account_id, username, 'NOT', datetime.now(), 0, ref_id)
 
             self.cursor.execute(
-                "INSERT INTO users (account_id, username, phone, date, ref_count, ref_id) VALUES (%s, %s, %s, %s, %s, %s)",
+                "INSERT INTO users (account_id, username, phone, registered_at, ref_count, ref_id) VALUES (%s, %s, %s, %s, %s, %s)",
                 user_data
             )
             self.conn.commit()
