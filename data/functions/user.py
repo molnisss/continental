@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 class User:
     def __init__(self, user_id: int = None) -> None:
         # Parse the DATABASE_URL environment variable
-        DATABASE_URL = os.environ.get('postgres://ucq4qv2htrt2pv:p53ab00f49ae8715210bbe53160ca125ccc7b333aae748ff430e58214026c7107@ccaml3dimis7eh.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d44tn3vgqmiju6')
+        DATABASE_URL = os.environ.get('DATABASE_URL')
         
         if DATABASE_URL:
             result = urlparse(DATABASE_URL)
