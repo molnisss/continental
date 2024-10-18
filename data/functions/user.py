@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 
 
 class User:
-    def __init__(self, user_id: int = None) -> None:
+    def __init__(self, account_id: int = None) -> None:
         # Parse the DATABASE_URL environment variable
         DATABASE_URL = os.environ.get('DATABASE_URL')
         
@@ -23,14 +23,14 @@ class User:
         
         self.cursor = self.conn.cursor()
 
-        if user_id is not None:
+        if account_id is not None:
             self.cursor.execute(
-                'SELECT * FROM users WHERE user_id = %s', (user_id,)
+                'SELECT * FROM users WHERE account_id = %s', (account_id,)
             )
             user = self.cursor.fetchone()
 
             if user:
-                self.user_id = user[0]
+                self.account_id = user[0]
                 self.username = user[1]
                 self.phone = user[2]
                 self.date = user[3]
@@ -38,24 +38,24 @@ class User:
                 self.ref_id = user[5]
 
 
-    def join_users(self, user_id: int, username: str, ref_id: str = None) -> bool:
+    def join_users(self, account_id: int, username: str, ref_id: str = None) -> bool:
         """
         Запис користувача в базу даних
-        :param user_id: int
+        :param account_id: int
         :param username: str
         :return статус: bool
         """
         status = False
         self.cursor.execute(
-            "SELECT * FROM users WHERE user_id = %s", (user_id,)
+            "SELECT * FROM users WHERE account_id = %s", (account_id,)
         )
         row = self.cursor.fetchall()
 
         if len(row) == 0:
-            user_data = (user_id, username, 'NOT', datetime.now(), 0, ref_id)
+            user_data = (account_id, username, 'NOT', datetime.now(), 0, ref_id)
 
             self.cursor.execute(
-                "INSERT INTO users (user_id, username, phone, date, ref_count, ref_id) VALUES (%s, %s, %s, %s, %s, %s)",
+                "INSERT INTO users (account_id, username, phone, date, ref_count, ref_id) VALUES (%s, %s, %s, %s, %s, %s)",
                 user_data
             )
             self.conn.commit()
@@ -71,7 +71,7 @@ class User:
         :return: bool
         """
         self.cursor.execute(
-            "UPDATE users SET phone = %s WHERE user_id = %s", (phone, self.user_id)
+            "UPDATE users SET phone = %s WHERE account_id = %s", (phone, self.account_id)
         )
         self.conn.commit()
 
@@ -80,7 +80,7 @@ class User:
     def add_referral(self) -> bool:
         refs_amount = self.get_refs_amount()
         self.cursor.execute(
-            "UPDATE users SET ref_count = %s WHERE user_id = %s", (refs_amount + 1, self.user_id)
+            "UPDATE users SET ref_count = %s WHERE account_id = %s", (refs_amount + 1, self.account_id)
         )
 
         self.conn.commit()
@@ -89,14 +89,14 @@ class User:
 
     def get_referrer_id(self) -> str:
         self.cursor.execute(
-            "SELECT ref_id FROM users WHERE user_id = %s", (self.user_id,)
+            "SELECT ref_id FROM users WHERE account_id = %s", (self.account_id,)
         )
         ref_id = self.cursor.fetchone()
         return ref_id[0] if ref_id else None
 
     def get_refs_amount(self) -> int:
         self.cursor.execute(
-            "SELECT ref_count FROM users WHERE user_id = %s", (self.user_id,)
+            "SELECT ref_count FROM users WHERE account_id = %s", (self.account_id,)
         )
         ref_count = self.cursor.fetchone()
 
