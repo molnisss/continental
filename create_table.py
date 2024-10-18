@@ -11,12 +11,12 @@ cursor.execute('''
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    account_id INT PRIMARY KEY,
+    account_id BIGINT PRIMARY KEY,
     username VARCHAR(100),
     phone VARCHAR(20),
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ref_count INTEGER DEFAULT 0,
-    ref_id INT
+    ref_id BIGINT
 );
 ''')
 
