@@ -11,7 +11,7 @@ cursor.execute('''
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    account_id BIGINT PRIMARY KEY,
+    user_id BIGINT PRIMARY KEY,
     username VARCHAR(100),
     phone VARCHAR(20),
     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
